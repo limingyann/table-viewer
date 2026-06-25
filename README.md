@@ -1,28 +1,113 @@
-# Table Viewer · 台球题目编辑器
+# TableViewer
 
-在线打开即可使用，无需安装 Python。
+## 发给别人使用
 
-## 在线使用（推荐）
+直接把整个文件夹压缩发送即可。对方不需要安装 Python，双击 `index.html` 就能查看和编辑题目。
 
-**https://limingyann.github.io/table-viewer/**
+免安装模式下点击“保存”会下载新的 `table_course_x.y.json` 到电脑；如需更新题库，把下载的新文件放回 `courses` 文件夹替换旧文件。
 
-用 Chrome 或 Edge 打开。打开后自动加载题目与桌台背景，无需点「目录」。
+如果需要直接覆盖原文件，可再使用 `启动 Table Viewer.command` 或 `startup_table_viewer.bat` 启动本地服务后访问 `http://127.0.0.1:8000/index.html`。
 
-## 本地使用
+桌台配置: table_config.json:
+{
+    "grid_x": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+    ],
+    "grid_y": [
+        0,
+        1,
+        2,
+        3
+    ],
+    "pockets": {	// 袋口
+        "1": {
+            "x": 0.0,
+            "y": 0.0
+        },
+        "2": {
+            "x": 4.0,
+            "y": 0.0
+        },
+        "3": {
+            "x": 8.0,
+            "y": 0.0
+        },
+        "4": {
+            "x": 0.0,
+            "y": 4.0
+        },
+        "5": {
+            "x": 4.0,
+            "y": 4.0
+        },
+        "6": {
+            "x": 8.0,
+            "y": 4.0
+        }
+    },
+    "ball_r": 15 // 球半径
+}
 
-```bash
-cd delivery/table-viewer
-python3 -m http.server 8765 --bind 127.0.0.1
-# 浏览器打开 http://127.0.0.1:8765/
-```
+坐标点: point
+{
+	"x" : 4.0,
+	"y" : 2.0,
+}
 
-Mac 也可双击 `打开 Table Viewer.command`；Windows 双击 `打开 Table Viewer.bat`。
+课程信息: table_course_x.y.json
+{
+    "chapter": 1,		// 章
+    "section": 3,		// 节
+    "desc": "1.3 下中袋30°小角度球, 打进目标球后, 白球装库边, 停到指定区域。", // 练习内容
+    "desc_pos": {		// 文字显示位置
+        "x": 3.5,
+        "y": 0.3
+    },
+    "ball_white": {		// 白球位置
+        "x": 4.5,
+        "y": 1.5
+    },
+    "ball_target": {	// 目标球位置
+        "x": 4.0,
+        "y": 2.5
+    },
+    "ball_hint": null,	// K球位置，没有就设置为 null
+    "ball_sub": {		// 辅助球位置，没有就设置为 null
+        "x": 1.0,
+        "y": 1.0
+    },
+    "edges": [			// 撞库位置，没有就设置为 []
+		{
+            "x": 1.0,
+            "y": 4.0
+        },
+        {
+            "x": 0.0,
+            "y": 3.0
+        }
+    ],
+    "area": {		     // 白球停止区域，没有就设置为 null	
+        "x1": 2.0,
+        "y1": 2.0,
+		"x2": 2.5,
+        "y2": 2.5,
+    },
+    "pocket": "5" 		 // 进目标袋口，没有就设置为 null
+}
 
-## 保存说明
 
-- **在线链接**：编辑后点「保存」会下载 JSON 到「下载」文件夹
-- **本地 + 选目录**：点「目录」授权后，可写回 `courses/` 文件夹（Chrome/Edge）
 
-## GitHub 仓库
-
-https://github.com/limingyann/table-viewer
+连线规则:
+1、白球 连接 撞击点
+2、目标球 连接 袋口
+3、撞击点 连接 碰库点
+4、碰库点 连接 碰库点
+5、碰库点 连接 停球区

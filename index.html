@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Table Viewer</title>
   <style>
     :root {
@@ -686,7 +689,7 @@
         <div id="coursePickerMenu" class="course-picker-menu" role="listbox" aria-label="课程文件" hidden></div>
       </div>
       <div class="button-row">
-        <button id="authorizeButton" class="action-button secondary" type="button">目录</button>
+        <button id="authorizeButton" class="action-button secondary" type="button" hidden>目录</button>
         <button id="newCourseButton" class="action-button secondary" type="button" disabled>新建题目</button>
         <button id="loadButton" class="action-button primary" type="button" disabled>加载</button>
       </div>
@@ -1276,10 +1279,15 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
     function bootstrapSiteHostingSync() {
       if (!isSiteHttpHosting()) return;
 
-      directoryAccessMode = "http";
-      selectedDirectoryHandle = null;
-      selectedDirectoryName = isRemoteHttpHosting() ? "在线题目包" : "当前站点目录";
-      refreshCourseFilesFromOfflineBundle();
+      try {
+        directoryAccessMode = "http";
+        selectedDirectoryHandle = null;
+        selectedDirectoryName = isRemoteHttpHosting() ? "在线题目包" : "当前站点目录";
+        refreshCourseFilesFromOfflineBundle();
+      } catch (error) {
+        console.error(error);
+        setStatus(`初始化失败：${error.message}`, true);
+      }
     }
 
     function cloneOfflineCourse(fileName) {
@@ -1841,7 +1849,6 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
 
     async function authorizeCoursesFolder() {
       if (!shouldOfferDirectoryPicker()) {
-        setStatus("在线版无需选择目录，打开即可编辑；保存时会下载 JSON。");
         return;
       }
 
@@ -1941,7 +1948,11 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
         const fromHttp = await readJsonFromHttpCandidates(fileName);
         if (fromHttp) return fromHttp;
 
-        throw new Error(`未找到 ${fileName}。请确认本地服务在 table_viewer 2 目录启动，并访问 http://127.0.0.1:8000/index.html。`);
+        if (OFFLINE_COURSE_FILES[fileName]) {
+          return cloneOfflineCourse(fileName);
+        }
+
+        throw new Error(`未找到 ${fileName}。`);
       }
 
       try {
@@ -2586,10 +2597,10 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       virtualPocketButton.classList.toggle("secondary", !isMarkingVirtualPocket);
       virtualPocketButton.textContent = isMarkingVirtualPocket ? "结束标记" : "虚拟袋口";
       authorizeButton.hidden = !shouldOfferDirectoryPicker();
+      authorizeButton.textContent = usesDownloadSave() ? "选目录" : "目录";
       if (!shouldOfferDirectoryPicker()) {
         return;
       }
-      authorizeButton.textContent = usesDownloadSave() ? "选目录" : "目录";
       authorizeButton.title = usesDownloadSave()
         ? "可选：选择本文件夹后，可写回 JSON/图例到 courses 目录"
         : isHttpDirectoryMode()
@@ -5881,6 +5892,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
 
     bootstrapSiteHostingSync();
     renderCoursePicker();
+    updateButtonStates();
     setStatus(location.protocol === "file:"
       ? "正在打开免安装模式…"
       : isSiteHttpHosting()
