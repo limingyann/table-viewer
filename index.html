@@ -1199,6 +1199,14 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       return location.protocol === "http:" || location.protocol === "https:";
     }
 
+    function isRemoteHttpHosting() {
+      return isSiteHttpHosting() && !isLocalHttpServer();
+    }
+
+    function shouldOfferDirectoryPicker() {
+      return !isRemoteHttpHosting();
+    }
+
     function isFileProtocolMode() {
       return location.protocol === "file:" || directoryAccessMode === "file";
     }
@@ -1215,8 +1223,13 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       return directoryAccessMode === "file" || (isHttpDirectoryMode() && !selectedDirectoryHandle);
     }
 
-    function isCourseJsonFileName(name) {
-      return /^table_course_.+\.json$/i.test(name);
+    function bootstrapSiteHostingSync() {
+      if (!isSiteHttpHosting()) return;
+
+      directoryAccessMode = "http";
+      selectedDirectoryHandle = null;
+      selectedDirectoryName = isRemoteHttpHosting() ? "在线题目包" : "当前站点目录";
+      refreshCourseFilesFromOfflineBundle();
     }
 
     async function fetchJsonLinksFromListing(url) {
@@ -1316,7 +1329,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       coursePickerMenuEl.hidden = !coursePickerOpen || !hasDirectory || !hasFiles;
 
       if (!hasDirectory) {
-        coursePickerFileEl.textContent = "请先选择目录";
+        coursePickerFileEl.textContent = isSiteHttpHosting() ? "正在加载题目…" : "请先选择目录";
         coursePickerDescEl.textContent = "";
         coursePickerDescEl.title = "";
         coursePickerTrigger.title = "";
@@ -1755,7 +1768,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       }
 
       if (isSiteHttpHosting()) {
-        if (isLocalHttpServer() && "showDirectoryPicker" in window) {
+        if (shouldOfferDirectoryPicker() && "showDirectoryPicker" in window) {
           const handle = await loadStoredDirectoryHandle();
           if (handle) {
             try {
@@ -1773,7 +1786,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
                 return;
               }
             } catch (error) {
-              // Fall back to read-only HTTP preview.
+              // Fall back to embedded online bundle.
             }
           }
         }
@@ -1823,6 +1836,11 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
     }
 
     async function authorizeCoursesFolder() {
+      if (!shouldOfferDirectoryPicker()) {
+        setStatus("在线版无需选择目录，打开即可编辑；保存时会下载 JSON。");
+        return;
+      }
+
       try {
         if ("showDirectoryPicker" in window) {
           const handle = await window.showDirectoryPicker({
@@ -2563,7 +2581,10 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       virtualPocketButton.classList.toggle("primary", isMarkingVirtualPocket);
       virtualPocketButton.classList.toggle("secondary", !isMarkingVirtualPocket);
       virtualPocketButton.textContent = isMarkingVirtualPocket ? "结束标记" : "虚拟袋口";
-      authorizeButton.hidden = false;
+      authorizeButton.hidden = !shouldOfferDirectoryPicker();
+      if (!shouldOfferDirectoryPicker()) {
+        return;
+      }
       authorizeButton.textContent = usesDownloadSave() ? "选目录" : "目录";
       authorizeButton.title = usesDownloadSave()
         ? "可选：选择本文件夹后，可写回 JSON/图例到 courses 目录"
@@ -5854,19 +5875,22 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
     });
     window.addEventListener("resize", drawPreview);
 
+    bootstrapSiteHostingSync();
     renderCoursePicker();
     setStatus(location.protocol === "file:"
       ? "正在打开免安装模式…"
       : isSiteHttpHosting()
       ? "正在加载题目…"
-      : `请先选择目录。当前页面目录：${getAppFolderUrl()}`);
+      : "正在初始化…");
 
     Promise.all([loadBallWhiteImage(), loadBallTargetImage(), preloadSnookerBallImages()]).finally(() => {
       drawPreview();
     });
 
     restoreDirectoryOnStartup().catch((error) => {
-      setStatus(`恢复上次目录失败：${error.message}，请重新点击「目录」。`, true);
+      setStatus(isSiteHttpHosting()
+        ? `加载题目失败：${error.message}`
+        : `恢复上次目录失败：${error.message}，请重新点击「目录」。`, true);
     }).finally(() => {
       updateButtonStates();
     });
