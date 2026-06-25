@@ -6,7 +6,7 @@
 
 **https://limingyann.github.io/table-viewer/**
 
-用 Chrome 或 Edge 打开。题目与图例已内置，打开即可编辑。
+用 Chrome 或 Edge 打开。打开后自动加载题目与桌台背景，无需点「目录」。
 
 ## 本地使用
 
@@ -22,6 +22,18 @@ Mac 也可双击 `打开 Table Viewer.command`；Windows 双击 `打开 Table Vi
 
 - **在线链接**：编辑后点「保存」会下载 JSON 到「下载」文件夹
 - **本地 + 选目录**：点「目录」授权后，可写回 `courses/` 文件夹（Chrome/Edge）
+
+## 资源清单
+
+| 路径 | 说明 |
+|------|------|
+| `index.html` | 主程序（内置题目与桌台背景） |
+| `table_background.png` | 桌台背景图 |
+| `courses/*.json` | 题目数据 |
+| `courses/*.legend.png` | 题目图例 |
+| `courses/table_background.png` | 课程目录备用背景 |
+| `balls/` | 球体贴图 |
+| `table_config.json` | 桌台配置 |
 
 ## GitHub 仓库
 
