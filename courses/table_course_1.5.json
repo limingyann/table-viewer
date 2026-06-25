@@ -1,0 +1,58 @@
+{
+    "chapter": 1,
+    "section": 5,
+    "desc": "入围入围入围入围入围入围入围",
+    "difficulty": 2,
+    "shot_requirement": "124444555",
+    "desc_pos": {
+        "x": 1.006,
+        "y": 0.888
+    },
+    "ball_white": {
+        "x": 6.693,
+        "y": 1.068
+    },
+    "cue_hit": {
+        "x": -0.06,
+        "y": -0.47
+    },
+    "cue_hit_pos": {
+        "x": 1.677,
+        "y": 2.518
+    },
+    "ball_target": {
+        "x": 5.797,
+        "y": 2.371,
+        "num": 1
+    },
+    "ball_hint": null,
+    "ball_sub": {
+        "x": 2.646,
+        "y": 3.123
+    },
+    "edges": [],
+    "area": {
+        "x1": 1.909,
+        "y1": 1.824,
+        "x2": 2.709,
+        "y2": 2.524
+    },
+    "pocket": "2",
+    "virtual_pocket": null,
+    "show_cue_hit": true,
+    "show_ghost_ball": true,
+    "show_standard_lines": true,
+    "show_ball_labels": true,
+    "free_lines": [
+        {
+            "from": {
+                "x": 4.011,
+                "y": 0.007
+            },
+            "to": {
+                "x": 4.952,
+                "y": 3.904
+            }
+        }
+    ]
+}

@@ -1,0 +1,36 @@
+{
+    "chapter": 1,
+    "section": 1,
+    "desc": "1.1 下中袋30°小角度球。test",
+    "difficulty": null,
+    "shot_requirement": "",
+    "desc_pos": {
+        "x": 3.5,
+        "y": 0.3
+    },
+    "ball_white": {
+        "x": 6.406,
+        "y": 3.274
+    },
+    "cue_hit": null,
+    "cue_hit_pos": {
+        "x": 4,
+        "y": 2
+    },
+    "ball_target": {
+        "x": 4.997,
+        "y": 0.971,
+        "num": 10
+    },
+    "ball_hint": null,
+    "ball_sub": null,
+    "edges": [],
+    "area": null,
+    "pocket": "5",
+    "virtual_pocket": null,
+    "show_cue_hit": true,
+    "show_ghost_ball": true,
+    "show_standard_lines": true,
+    "show_ball_labels": true,
+    "free_lines": []
+}

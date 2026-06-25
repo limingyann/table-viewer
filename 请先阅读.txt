@@ -1,0 +1,52 @@
+Table Viewer 台球题目编辑器
+============================
+
+【不需要选目录也能看】
+
+解压后双击打开，题目和图例会自动加载。
+若图例或题目缺失，可点左上角「选目录」，选择解压后的 table_viewer 文件夹。
+
+【选目录的作用（可选）】
+
+• 加载 courses 文件夹里的最新 JSON 和 .legend 图例
+• 保存时直接写回本地文件（不经过下载）
+
+【推荐打开方式 — 成功率最高】
+
+Windows：双击「打开 Table Viewer.bat」
+Mac：双击「打开 Table Viewer.command」
+       若提示无法打开：右键 → 打开 → 仍要打开
+
+程序会自动打开浏览器，无需手动输入地址。
+
+【备用方式 — 免安装】
+
+1. 必须先解压整个 zip，不要直接在压缩包里打开
+2. 进入 table_viewer 文件夹
+3. 用 Chrome 或 Edge 双击 index.html
+
+【若仍然打不开，请逐项检查】
+
+□ 是否已解压？（文件夹里应能看到 index.html、balls 文件夹）
+□ 是否用 Chrome 或 Edge？（不要用微信内置浏览器）
+□ Windows 是否安装了 Python？
+  - 没有 Python：优先用上面的 .bat 文件；或安装 Python 后重试
+  - 下载：https://www.python.org/downloads/
+□ Mac 是否拦截了 .command？
+  - 右键 → 打开 → 仍要打开
+□ 页面空白？
+  - 换 Chrome/Edge 重试
+  - 或双击「打开 Table Viewer」启动本地服务
+
+【保存说明】
+
+编辑后点「保存」→ JSON 会下载到电脑的「下载」文件夹。
+若要更新题库，把 JSON 放回 courses 文件夹替换同名文件。
+
+【袋口编号】
+
+        ① —— ② —— ③
+        |              |
+        ④ —— ⑤ —— ⑥
+
+更详细说明见：使用说明.txt

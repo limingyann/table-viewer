@@ -1,0 +1,51 @@
+{
+    "chapter": 1,
+    "section": 2,
+    "desc": "1.2 下中袋30°小角度球, 打进目标球后, 白球K到指定球。",
+    "difficulty": null,
+    "shot_requirement": "",
+    "desc_pos": {
+        "x": 0.478,
+        "y": 0.357
+    },
+    "ball_white": {
+        "x": 6.134,
+        "y": 2.981
+    },
+    "cue_hit": {
+        "x": -0.01,
+        "y": -0.57
+    },
+    "cue_hit_pos": {
+        "x": 2.276,
+        "y": 2.299
+    },
+    "ball_target": {
+        "x": 5.734,
+        "y": 1.352
+    },
+    "ball_hint": null,
+    "ball_sub": [
+        {
+            "x": 1,
+            "y": 1
+        },
+        {
+            "x": 0.995,
+            "y": 1.206
+        },
+        {
+            "x": 1.008,
+            "y": 1.412
+        }
+    ],
+    "edges": [],
+    "area": null,
+    "pocket": "5",
+    "virtual_pocket": null,
+    "show_cue_hit": true,
+    "show_ghost_ball": true,
+    "show_standard_lines": true,
+    "show_ball_labels": false,
+    "free_lines": []
+}
