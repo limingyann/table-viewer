@@ -214,6 +214,12 @@
       word-break: break-word;
     }
 
+    .app-version {
+      margin-top: 6px;
+      font-size: 11px;
+      color: #999;
+    }
+
     .status.error {
       color: var(--danger);
     }
@@ -701,6 +707,7 @@
         <button id="virtualPocketButton" class="action-button secondary" type="button" disabled>虚拟袋口</button>
       </div>
       <div id="status" class="status">就绪。</div>
+      <div id="appVersion" class="app-version" hidden></div>
       <form id="details" class="details" aria-live="polite"></form>
     </aside>
     <section class="stage">
@@ -714,6 +721,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
   <script>
     const TABLE_COLUMNS = 8;
     const TABLE_ROWS = 4;
+    const APP_VERSION = "20260625-3";
     const TABLE_BACKGROUND_FILE = "table_background.png";
     let TABLE_BACKGROUND_DATA_URL = "";
     const BALL_WHITE_IMAGE_FILE = "ball_white.png";
@@ -1154,6 +1162,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
     const drawLineButton = document.getElementById("drawLineButton");
     const virtualPocketButton = document.getElementById("virtualPocketButton");
     const statusEl = document.getElementById("status");
+    const appVersionEl = document.getElementById("appVersion");
     const detailsEl = document.getElementById("details");
     const canvas = document.getElementById("previewCanvas");
     const ctx = canvas.getContext("2d");
@@ -5893,6 +5902,10 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
     bootstrapSiteHostingSync();
     renderCoursePicker();
     updateButtonStates();
+    if (appVersionEl) {
+      appVersionEl.hidden = false;
+      appVersionEl.textContent = `版本 ${APP_VERSION}`;
+    }
     setStatus(location.protocol === "file:"
       ? "正在打开免安装模式…"
       : isSiteHttpHosting()
