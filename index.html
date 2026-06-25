@@ -1223,13 +1223,8 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       return directoryAccessMode === "file" || (isHttpDirectoryMode() && !selectedDirectoryHandle);
     }
 
-    function bootstrapSiteHostingSync() {
-      if (!isSiteHttpHosting()) return;
-
-      directoryAccessMode = "http";
-      selectedDirectoryHandle = null;
-      selectedDirectoryName = isRemoteHttpHosting() ? "在线题目包" : "当前站点目录";
-      refreshCourseFilesFromOfflineBundle();
+    function isCourseJsonFileName(name) {
+      return /^table_course_.+\.json$/i.test(name);
     }
 
     async function fetchJsonLinksFromListing(url) {
@@ -1276,6 +1271,15 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
       Object.keys(OFFLINE_COURSE_FILES)
         .filter(isCourseJsonFileName)
         .forEach((file) => addCourseFile(file));
+    }
+
+    function bootstrapSiteHostingSync() {
+      if (!isSiteHttpHosting()) return;
+
+      directoryAccessMode = "http";
+      selectedDirectoryHandle = null;
+      selectedDirectoryName = isRemoteHttpHosting() ? "在线题目包" : "当前站点目录";
+      refreshCourseFilesFromOfflineBundle();
     }
 
     function cloneOfflineCourse(fileName) {
