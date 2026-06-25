@@ -1645,7 +1645,7 @@ window.SNOOKER_BALL_DATA_URLS = {"s_red": "data:image/png;base64,iVBORw0KGgoAAAA
         renderDetails(activeCourse, activeFile);
         drawPreview();
         setStatus(usesDownloadSave()
-          ? `已下载 ${fileName}。本会话内切换题目会保留修改；持久保存请放入 courses/ 或点「目录」授权写回。`
+          ? `已下载 ${fileName} 到「下载」文件夹。`
           : `已保存 ${fileName} 到 ${selectedDirectoryName}。`);
       } catch (error) {
         if (error?.name === "AbortError") {
